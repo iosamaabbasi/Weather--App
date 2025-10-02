@@ -1,0 +1,129 @@
+/* 🌍 Global Styling */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: url("weather1.jpg") no-repeat center center/cover;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden; /* ✅ لیفٹ رائٹ اسکرول نہیں آئے گا */
+}
+
+/* 📦 App Container */
+.app {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+  color: #121212;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* 🔎 Search Box */
+.search-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.search-box input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  width: 70%;
+  font-size: 16px;   /* ✅ تاکہ موبائل پر زوم نہ کرے */
+  box-sizing: border-box;
+}
+.search-box button {
+  padding: 10px 15px;
+  margin-left: 8px;
+  border: none;
+  border-radius: 10px;
+  background: #007BFF;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;   /* ✅ تاکہ موبائل پر بیلنس رہے */
+}
+.search-box button:hover {
+  background: #0056b3;
+}
+
+/* ⬇ Dropdown (react-select) */
+.css-13cymwt-control {
+  margin-top: 10px;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* 🌦 Weather Box */
+.weather-box img {
+  width: 100px;
+}
+.weather-box h1 {
+  font-size: 3rem;
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* 📅 Forecast Section */
+.forecast {
+  margin-top: 20px;
+}
+.forecast-cards {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+.card {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  border-radius: 15px;
+  min-width: 100px;
+  text-align: center;
+  color: #000;
+}
+.card img {
+  width: 50px;
+}
+
+/* 📱 ✅ Mobile Responsive */
+@media (max-width: 600px) {
+  .app {
+    width: 95%;
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .search-box {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-box input,
+  .search-box button {
+    width: 100%;     
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
+  .weather-box h1 {
+    font-size: 2rem;  
+    text-align: center;
+  }
+
+  .forecast-cards {
+    display: flex;
+    justify-content: center; 
+    flex-wrap: wrap;
+  }
+
+  .card {
+    min-width: 90px;
+    padding: 10px;
+  }
+}
