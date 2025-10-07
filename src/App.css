@@ -28,7 +28,9 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  position: relative; /* ✅ dropdown ko box ke andar rakhne ke liye */
 }
+
 .search-box input {
   padding: 10px;
   border-radius: 10px;
@@ -38,6 +40,7 @@ body {
   font-size: 16px;   /* ✅ تاکہ موبائل پر زوم نہ کرے */
   box-sizing: border-box;
 }
+
 .search-box button {
   padding: 10px 15px;
   margin-left: 8px;
@@ -48,8 +51,57 @@ body {
   cursor: pointer;
   font-size: 16px;   /* ✅ تاکہ موبائل پر بیلنس رہے */
 }
+
 .search-box button:hover {
   background: #0056b3;
+}
+
+/* 🔽 Dropdown Suggestion List */
+.suggestion-list {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  width: 100%;
+  max-height: 250px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  overflow-y: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  backdrop-filter: blur(8px);
+  animation: dropdownFade 0.25s ease-in-out;
+}
+
+/* ✨ Smooth fade-in animation */
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-list li {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  text-align: left;
+  transition: 0.2s;
+}
+
+.suggestion-list li:hover {
+  background: #f0f0f0;
+}
+
+/* 🔡 City Name Highlight */
+.suggestion-list li strong {
+  color: #007BFF;
 }
 
 /* ⬇ Dropdown (react-select) */
@@ -63,6 +115,7 @@ body {
 .weather-box img {
   width: 100px;
 }
+
 .weather-box h1 {
   font-size: 3rem;
   margin: 10px 0;
@@ -73,12 +126,14 @@ body {
 .forecast {
   margin-top: 20px;
 }
+
 .forecast-cards {
   display: flex;
   gap: 10px;
   overflow-x: auto;
   padding: 10px 0;
 }
+
 .card {
   background: rgba(255, 255, 255, 0.3);
   padding: 15px;
@@ -87,6 +142,7 @@ body {
   text-align: center;
   color: #000;
 }
+
 .card img {
   width: 50px;
 }
@@ -125,5 +181,10 @@ body {
   .card {
     min-width: 90px;
     padding: 10px;
+  }
+
+  .suggestion-list {
+    max-height: 200px;
+    font-size: 14px;
   }
 }
