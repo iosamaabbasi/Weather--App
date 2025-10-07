@@ -10,10 +10,10 @@ export default function App() {
   const [suggestions, setSuggestions] = useState([]);
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
-
-  // ✅ Combine all cities with their country code
   const [allCities, setAllCities] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
+  // ✅ Load all countries + cities once
   useEffect(() => {
     const countries = Country.getAllCountries();
     const cityList = [];
@@ -30,7 +30,7 @@ export default function App() {
     setAllCities(cityList);
   }, []);
 
-  // ✅ Format Time Function
+  // ✅ Helper functions
   const pad = (n) => (n < 10 ? "0" + n : n);
   const formatTime = (dt, timezone) => {
     const localDate = new Date((dt + timezone) * 1000);
@@ -41,7 +41,7 @@ export default function App() {
     return `${pad(h12)}:${pad(minutes)} ${ampm}`;
   };
 
-  // ✅ Fetch weather by city name
+  // ✅ Fetch weather
   const getWeather = async (cityName) => {
     if (!cityName) return;
     try {
@@ -57,20 +57,21 @@ export default function App() {
         (item, index) => index % 8 === 0
       );
       setForecast(dailyData);
-      setSuggestions([]);
+      setDropdownVisible(false);
     } catch (err) {
       alert("City not found!");
       console.error(err);
     }
   };
 
-  // ✅ Handle typing in input
+  // ✅ Handle typing
   const handleChange = (e) => {
     const value = e.target.value;
     setSearch(value);
 
     if (value.trim() === "") {
-      setSuggestions([]);
+      // Show all again if blank
+      setSuggestions(allCities.slice(0, 25));
       return;
     }
 
@@ -80,7 +81,18 @@ export default function App() {
         item.country.toLowerCase().startsWith(value.toLowerCase())
     );
 
-    setSuggestions(filtered.slice(0, 15)); // limit to 15 for performance
+    setSuggestions(filtered.slice(0, 25));
+  };
+
+  // ✅ When focused (show dropdown)
+  const handleFocus = () => {
+    setDropdownVisible(true);
+    setSuggestions(allCities.slice(0, 25)); // show first few A–Z by default
+  };
+
+  // ✅ When blur (hide dropdown after short delay)
+  const handleBlur = () => {
+    setTimeout(() => setDropdownVisible(false), 200);
   };
 
   // ✅ When city selected
@@ -104,11 +116,13 @@ export default function App() {
           value={search}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         />
         <button onClick={() => getWeather(search)}>Search</button>
 
-        {/* 🔽 Dropdown Suggestion List */}
-        {suggestions.length > 0 && (
+        {/* 🔽 Dropdown appears when typing or focused */}
+        {dropdownVisible && suggestions.length > 0 && (
           <ul className="suggestion-list">
             {suggestions.map((city, index) => (
               <li key={index} onClick={() => handleSelect(city)}>
@@ -119,7 +133,7 @@ export default function App() {
         )}
       </div>
 
-      {/* ✅ Weather Box */}
+      {/* 🌦 Weather Info */}
       {weather && (
         <div className="weather-box">
           <h2>
@@ -131,14 +145,13 @@ export default function App() {
           />
           <h1>{Math.round(weather.main.temp)}°C</h1>
           <p>{weather.weather[0].description}</p>
-
           <p>🕒 Local Time: {formatTime(weather.dt, weather.timezone)}</p>
           <p>🌅 Sunrise: {formatTime(weather.sys.sunrise, weather.timezone)}</p>
           <p>🌇 Sunset: {formatTime(weather.sys.sunset, weather.timezone)}</p>
         </div>
       )}
 
-      {/* ✅ Forecast */}
+      {/* 📅 Forecast */}
       {forecast.length > 0 && (
         <div className="forecast">
           <h3>5-Day Forecast</h3>
